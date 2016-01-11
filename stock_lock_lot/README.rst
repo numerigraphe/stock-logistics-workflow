@@ -20,6 +20,16 @@ To allow a user to block or unblock a Lot:
 #. in the "Warehouse" section, check the box
    "Can block/unblock Serial Numbers/Lots"
 
+Optional: enforce strict blocking
+---------------------------------
+By default, users are still allowed to force-move a blocked Serial Number/lot
+by forcing the availability of a stock operation.
+If you want to enforce a strict blocking of Serial Numbers/lots:
+
+#. open the warehouse settings (menu "Configuration > Warehouse")
+#. in the "Lot blocking" section, check the box
+   "Strictly forbid moves on blocked Serial Numbers/lots."
+
 Usage
 =====
 

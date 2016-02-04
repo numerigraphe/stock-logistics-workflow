@@ -38,8 +38,7 @@ class StockProductionLot(models.Model):
         return self._get_product_locked(self.product_id)
 
     locked = fields.Boolean(string='Blocked', default='_get_locked_value',
-                            readonly=True,
-                            groups='stock_lock_lot.group_lock_lot')
+                            readonly=True)
 
     @api.one
     @api.onchange('product_id')

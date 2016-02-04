@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-# For copyright and license notices, see __openerp__.py file in root directory
-##############################################################################
+# © 2015 Serv. Tec. Avanzados - Pedro M. Baeza (http://www.serviciosbaeza.com)
+# © 2015 AvanzOsc (http://www.avanzosc.es)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
 from openerp import models, fields, api, exceptions, _
 
 
@@ -37,7 +38,8 @@ class StockProductionLot(models.Model):
         return self._get_product_locked(self.product_id)
 
     locked = fields.Boolean(string='Blocked', default='_get_locked_value',
-                            readonly=True)
+                            readonly=True,
+                            groups='stock_lock_lot.group_lock_lot')
 
     @api.one
     @api.onchange('product_id')
@@ -47,7 +49,10 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def button_lock(self):
-        '''Lock the lot if the reservations allow it'''
+        '''Lock the lot if the reservations and permissions allow it'''
+        if not self.user_has_groups('stock_lock_lot.group_lock_lot'):
+            raise exceptions.Warning(
+                _('You are not allowed to block Serial Numbers/Lots'))
         stock_quant_obj = self.env['stock.quant']
         for lot in self:
             cond = [('lot_id', '=', lot.id),
@@ -62,6 +67,10 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def button_unlock(self):
+        '''Lock the lot if the permissions allow it'''
+        if not self.user_has_groups('stock_lock_lot.group_lock_lot'):
+            raise exceptions.Warning(
+                _('You are not allowed to unblock Serial Numbers/Lots'))
         return self.write({'locked': False})
 
     # Kept in old API to maintain compatibility

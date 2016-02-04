@@ -2,16 +2,18 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-=================================================
-Block Serial Numbers/lots on manufacturing orders
-=================================================
+==============================================
+Enforce strict blocking of Serial Numbers/lots
+==============================================
 
-Using this module, Manufacturing Orders are not allowed to select a
-blocked Serial Number/lot.
+This module prevents users from moving blocked lots/serial numbers, even if
+they force the availability of stock moves.
 
-.. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
-   :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/154/8.0
+Usage
+=====
+
+When a stock move is requested for a blocked lot/serial number, an error is
+reported to the user.
 
 Bug Tracker
 ===========
@@ -27,10 +29,6 @@ Credits
 Contributors
 ------------
 
-* Pedro M. Baeza <pedro.baeza@serviciosbaeza.com>
-* Ana Juaristi <anajuaristi@avanzosc.es>
-* Alfredo de la Fuente <alfredodelafuente@avanzosc.es>
-* Oihane Crucelaegui <oihanecrucelaegi@avanzosc.es>
 * Lionel Sausin <ls@numerigraphe.com>
 
 Maintainer

@@ -54,6 +54,6 @@ msgstr "Stock et variations prévues"
 #. module: stock_disallow_negative
 #: code:addons/stock_disallow_negative/stock_disallow_negative.py:60
 #, python-format
-msgid "You cannot valide this stock operation because the stock level of the product '[%s] %s' lot '%s' would become negative on the stock location '%s' and negative stock is not allowed for this product."
-msgstr "Vous ne pouvez pas valider cette opération de stock car le niveau de stock de l'article '[%s] %s' lot '%s' deviendrait négatif sur l'emplacement de stock '%s' et le stock négatif n'est pas autorisé pour cet article."
+msgid "You cannot valide this stock operation because the stock level of the product '[%s] %s' - (lot '%s') would become negative on the stock location '%s' and negative stock is not allowed for this product."
+msgstr "Vous ne pouvez pas valider cette opération de stock car le niveau de stock de l'article '[%s] %s' - (lot '%s') deviendrait négatif sur l'emplacement de stock '%s' et le stock négatif n'est pas autorisé pour cet article."
 

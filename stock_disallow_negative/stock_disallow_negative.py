@@ -58,7 +58,10 @@ class StockQuant(models.Model):
                 not self.product_id.categ_id.allow_negative_stock):
             raise ValidationError(
                 _("You cannot valide this stock operation because the stock "
-                  "level of the product '%s' would become negative on the "
+                  "level of the product '[%s] %s' - (lot '%s') would become negative on the "
                   "stock location '%s' and negative stock is not allowed "
                   "for this product.")
-                % (self.product_id.name, self.location_id.complete_name))
+                % (self.product_id.default_code,
+                   self.product_id.name,
+                   self.lot_id.name,
+                   self.location_id.complete_name))

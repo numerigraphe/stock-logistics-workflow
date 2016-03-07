@@ -84,6 +84,6 @@ msgstr ""
 #. module: stock_disallow_negative
 #: code:addons/stock_disallow_negative/stock_disallow_negative.py:74
 #, python-format
-msgid "You cannot valide this stock operation because the stock level of the product '%s' would become negative on the stock location '%s' and negative stock is not allowed for this product."
+msgid "You cannot valide this stock operation because the stock level of the product '[%s] %s' - (lot '%s') would become negative on the stock location '%s' and negative stock is not allowed for this product."
 msgstr ""
 

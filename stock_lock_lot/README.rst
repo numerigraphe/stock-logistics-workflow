@@ -69,6 +69,7 @@ Contributors
 Maintainer
 ----------
 
+
 .. image:: https://odoo-community.org/logo.png
    :alt: Odoo Community Association
    :target: https://odoo-community.org

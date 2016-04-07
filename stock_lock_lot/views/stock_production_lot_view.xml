@@ -9,7 +9,8 @@
                 <div class="oe_button_box oe_right" position="before">
                     <header>
                         <button name="button_lock" string="Block"
-                            type="object" attrs="{'invisible':[('locked','=',True)]}" />
+                            type="object" attrs="{'invisible':[('locked','=',True)]}" 
+                            confirm="If you block this Serial Number/Lot, all its reservations will be removed, and the pending stock moves will be marked 'unavailable'."/>
                         <button name="button_unlock" string="Unblock"
                             type="object" attrs="{'invisible':[('locked','=',False)]}" />
                     </header>

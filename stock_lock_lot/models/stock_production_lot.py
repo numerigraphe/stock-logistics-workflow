@@ -3,7 +3,7 @@
 # © 2015 AvanzOsc (http://www.avanzosc.es)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp import models, fields, api, exceptions, _
+from openerp import models, fields, api
 
 
 class StockProductionLot(models.Model):
@@ -43,22 +43,20 @@ class StockProductionLot(models.Model):
     @api.one
     @api.onchange('product_id')
     def onchange_product_id(self):
-        '''Instruct the client to lock/unlock a lot on product change'''
+        """Instruct the client to lock/unlock a lot on product change"""
         self.locked = self._get_product_locked(self.product_id)
 
     @api.multi
     def button_lock(self):
-        '''Lock the lot if the reservations allow it'''
-        stock_quant_obj = self.env['stock.quant']
-        for lot in self:
-            cond = [('lot_id', '=', lot.id),
-                    ('reservation_id', '!=', False)]
-            for quant in stock_quant_obj.search(cond):
-                if quant.reservation_id.state not in ('cancel', 'done'):
-                    raise exceptions.Warning(
-                        _('Error! Serial Number/Lot "%s" currently has '
-                          'reservations.')
-                        % (lot.name))
+        """"Block the lot
+
+        If the lot has reservations, they will be undone to lock the lot."""
+        reserved_quants = self.env['stock.quant'].search(
+            [('lot_id', 'in', self.ids),
+             ('reservation_id', '!=', False),
+             ('reservation_id.state', 'not in', ('cancel', 'done'))])
+        reserved_quants.mapped("reservation_id").do_unreserve()
+        # Block the lot
         return self.write({'locked': True})
 
     @api.multi
@@ -67,7 +65,7 @@ class StockProductionLot(models.Model):
 
     # Kept in old API to maintain compatibility
     def create(self, cr, uid, vals, context=None):
-        '''Force the locking/unlocking, ignoring the value of 'locked'.'''
+        """Force the locking/unlocking, ignoring the value of 'locked'."""
         #  Web quick-create doesn't provide product_id in vals, but in context
         if context is None:
             context = {}
@@ -81,7 +79,7 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def write(self, values):
-        '''Lock the lot if changing the product and locking is required'''
+        """"Lock the lot if changing the product and locking is required"""
         if 'product_id' in values:
             product = self.env['product.product'].browse(
                 values.get('product_id'))

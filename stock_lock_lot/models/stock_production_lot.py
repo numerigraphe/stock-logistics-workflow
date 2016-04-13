@@ -3,7 +3,7 @@
 # © 2015 AvanzOsc (http://www.avanzosc.es)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp import models, fields, api, exceptions, _
+from openerp import models, fields, api
 
 
 class StockProductionLot(models.Model):
@@ -48,20 +48,18 @@ class StockProductionLot(models.Model):
 
     @api.multi
     def button_lock(self):
-        """"Lock the lot if the reservations and permissions allow it"""
+        """"Block the lot
+
+        If the lot has reservations, they will be undone to lock the lot."""
         if not self.user_has_groups('stock_lock_lot.group_lock_lot'):
             raise exceptions.Warning(
                 _('You are not allowed to block Serial Numbers/Lots'))
-        stock_quant_obj = self.env['stock.quant']
-        for lot in self:
-            cond = [('lot_id', '=', lot.id),
-                    ('reservation_id', '!=', False)]
-            for quant in stock_quant_obj.search(cond):
-                if quant.reservation_id.state not in ('cancel', 'done'):
-                    raise exceptions.Warning(
-                        _('Error! Serial Number/Lot "%s" currently has '
-                          'reservations.')
-                        % (lot.name))
+        reserved_quants = self.env['stock.quant'].search(
+            [('lot_id', 'in', self.ids),
+             ('reservation_id', '!=', False),
+             ('reservation_id.state', 'not in', ('cancel', 'done'))])
+        reserved_quants.mapped("reservation_id").do_unreserve()
+        # Block the lot
         return self.write({'locked': True})
 
     @api.multi
@@ -76,6 +74,8 @@ class StockProductionLot(models.Model):
     def create(self, cr, uid, vals, context=None):
         """Force the locking/unlocking, ignoring the value of 'locked'."""
         #  Web quick-create doesn't provide product_id in vals, but in context
+        if context is None:
+            context = {}
         product_id = vals.get('product_id', context.get('product_id', False))
         if product_id:
             vals['locked'] = self._get_product_locked(

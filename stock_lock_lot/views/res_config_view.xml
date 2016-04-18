@@ -11,10 +11,8 @@
                         <group>
                             <label for="id" string="Lot blocking" />
                             <div>
-                                <div>
-                                    <field name="module_stock_lock_lot_strict" class="oe_inline" />
-                                    <label for="module_stock_lock_lot_strict" />
-                                </div>
+                                <field name="stock_lock_lot_strict" class="oe_inline" />
+                                <label for="stock_lock_lot_strict" />
                             </div>
                         </group>
                     </xpath>
